@@ -1,0 +1,15 @@
+091176bb7ad736b1a4e5d27f02491373 *DESCRIPTION
+b8b28dc42dbc89d65101fd2eea06f1fa *NAMESPACE
+b1eb12fab2d05cccb113a109c06a195b *R/autonewsmd.R
+11c7319186b5eb251c32bb4770af3956 *R/get_git_log.R
+d7196afd672d656f0bd652db12fc3877 *R/markdown_render.R
+5687f90733032d19de663c900470d136 *build/vignette.rds
+f89d69c8e7849d396c178ad5c7a96ea1 *inst/doc/autonewsmd.R
+14f681a343371cec58372a61e47168f1 *inst/doc/autonewsmd.Rmd
+ee804c2ce7e8edb5cfb9abe70e425fec *inst/doc/autonewsmd.html
+5c463ab2393fed281ceae2fce7c85b2b *inst/templates/news-md-template.Rmd
+025fd2f8df29fe6b2d4bb631a4401364 *man/autonewsmd.Rd
+d8f6586a54c8c9ab7c7074c2d8dd37d0 *tests/testthat.R
+a6c990e20fb65e5878fc3b57ff2ba7d3 *tests/testthat/test-autonewsmd.R
+3b00a87ac0fdbb89ec84415ea1ab105a *tests/testthat/test-lints.R
+14f681a343371cec58372a61e47168f1 *vignettes/autonewsmd.Rmd
