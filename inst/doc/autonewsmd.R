@@ -49,7 +49,7 @@ an$generate()
 an$repo_list
 
 ## ----writenmd-----------------------------------------------------------------
-an$write()
+an$write(force = TRUE)
 
 ## ----listfiles----------------------------------------------------------------
 list.files(path)
@@ -63,7 +63,7 @@ Sys.sleep(2)
 git2r::add(repo, "NEWS.md")
 git2r::commit(repo, "chore: added news.md file")
 an$generate()
-an$write()
+an$write(force = TRUE)
 
 ## ----readnmd2-----------------------------------------------------------------
 newsmd <- readLines(file.path(path, "NEWS.md"))

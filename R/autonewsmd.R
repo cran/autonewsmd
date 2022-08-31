@@ -29,6 +29,7 @@
 #' @import data.table
 #' @import R6
 #' @importFrom magrittr "%>%"
+#' @importFrom utils askYesNo
 #'
 #' @examples
 #' # (Example is based on the public examples from the `git2r` R package)
@@ -65,7 +66,10 @@
 #'
 #' ## generate the news and write them to the repo
 #' an$generate()
-#' an$write()
+#'
+#' if (interactive()) {
+#'   an$write()
+#' }
 #'
 #' @export
 
@@ -152,12 +156,9 @@ autonewsmd <- R6::R6Class(
         )
       )
       if (is.null(repo_path)) {
-        message(paste0(
-          "No 'repo_path' provided. Setting 'repo_path' to '.' - please ",
-          "be aware that the file specified with 'file_name' and ",
-          "'file_ending' will overwrite existing files without a warning when ",
-          "executing the '$write()'-method."
-        ))
+        message(
+          "No 'repo_path' provided. Setting 'repo_path' to '.'."
+        )
         repo_path <- "."
       }
       self$repo_name <- repo_name
@@ -228,6 +229,12 @@ autonewsmd <- R6::R6Class(
     #' @details This function writes the changelog to the file system using the
     #'   `file_name` and `file_ending` fields to compose the file name.
     #'   CAUTION: existing files will be overwritten without any warning.
+    #' @param force A boolean. If `FALSE` (the default) a dialog is prompted to
+    #'   ask the user if the file should be (over-) written. If `TRUE`, the
+    #'   dialog is not prompted and the changelog file is created directly.
+    #' @param con A connection with the answer to the interactive question, if
+    #'   the changelog file should be written to the file system. This argument
+    #'   is intended mainly for being used in the unit tests.
     #' @return The function has no return value - it creates the new changelog
     #'   file.
     #'
@@ -269,13 +276,64 @@ autonewsmd <- R6::R6Class(
     #'
     #' ## generate the news and write them to the repo
     #' an$generate()
-    #' an$write()
     #'
-    write = function() {
+    #' if (interactive()) {
+    #'   an$write()
+    #' }
+    #'
+    write = function(force = FALSE, con = NULL) {
       stopifnot(
         !is.null(self$repo_list),
-        !is.null(private$repo_url)
+        !is.null(private$repo_url),
+        is.logical(force)
       )
+
+      if (isFALSE(force)) {
+        full_path <- file.path(
+          private$repo_path,
+          paste0(self$file_name, self$file_ending)
+        )
+        msg <- paste0(
+          "Do you want to write the file '", full_path, "'?"
+        )
+        if (file.exists(full_path)) {
+          msg <- paste(
+            msg, "CAUTION: this overwrites the existing file!",
+            sep = "\n"
+          )
+        }
+        msg <- paste(
+          msg, "(Use `force = TRUE` to omit this interactive question.)",
+          sep = "\n"
+        )
+        if (is.null(con) && interactive()) {
+          answer <- utils::askYesNo(
+            msg = message(msg),
+            default = TRUE
+          )
+        } else if (inherits(con, c("file", "connection"))) {
+          # display prompt and options
+          optlist <- paste(c("Yes", "no", "cancel"), collapse = "/")
+          prompt_opt <- paste0(msg, " (", optlist, ")\n")
+          message(prompt_opt)
+          read_con <- readLines(con = con, n = 1)
+          if (read_con %in% c("Yes", "yes", "y", "ye")) {
+            answer <- TRUE
+          } else {
+            answer <- FALSE
+          }
+        } else {
+          stop(paste0(
+            "Please provide a valid connection containing the ",
+            "answer to the interactive question, if the newly generated ",
+            "changelog file should be written to the file system."
+          ))
+        }
+
+        if (!isTRUE(answer)) {
+          return(invisible())
+        }
+      }
       markdown_render(
         repo_list = self$repo_list,
         repo_url = private$repo_url,

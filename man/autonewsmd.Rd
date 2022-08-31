@@ -48,7 +48,10 @@ an <- autonewsmd$new(repo_name = "TestRepo", repo_path = path)
 
 ## generate the news and write them to the repo
 an$generate()
-an$write()
+
+if (interactive()) {
+  an$write()
+}
 
 
 ## ------------------------------------------------
@@ -177,7 +180,10 @@ an <- autonewsmd$new(repo_name = "TestRepo", repo_path = path)
 
 ## generate the news and write them to the repo
 an$generate()
-an$write()
+
+if (interactive()) {
+  an$write()
+}
 
 }
 \section{Public fields}{
@@ -353,9 +359,22 @@ an$generate()
 \subsection{Method \code{write()}}{
 Writes the changelog to the file system.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{autonewsmd$write()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{autonewsmd$write(force = FALSE, con = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{force}}{A boolean. If `FALSE` (the default) a dialog is prompted to
+ask the user if the file should be (over-) written. If `TRUE`, the
+dialog is not prompted and the changelog file is created directly.}
+
+\item{\code{con}}{A connection with the answer to the interactive question, if
+the changelog file should be written to the file system. This argument
+is intended mainly for being used in the unit tests.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Details}{
 This function writes the changelog to the file system using the
   `file_name` and `file_ending` fields to compose the file name.
@@ -405,7 +424,10 @@ an <- autonewsmd$new(repo_name = "TestRepo", repo_path = path)
 
 ## generate the news and write them to the repo
 an$generate()
-an$write()
+
+if (interactive()) {
+  an$write()
+}
 
 }
 \if{html}{\out{</div>}}
