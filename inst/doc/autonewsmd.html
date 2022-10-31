@@ -120,13 +120,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -348,6 +355,74 @@ them in order to, e.g., generate beautiful changelogs out of them.
 Similar tools for other languages are, for example, <a href="https://github.com/cookpete/auto-changelog"><code>auto-changelog</code></a>
 for JavaScript and <a href="https://github.com/KeNaCo/auto-changelog"><code>auto-changelog</code></a>
 for Python.</p>
+<div id="supported-commit-types" class="section level2">
+<h2>Supported Commit Types</h2>
+<p>The default changelog template organizes commits according to their
+association with specific tags. The tags form the headings of the
+changelog file and are sorted in decreasing order according to their
+release dates. The following table lists the commit types that are
+currently supported by <code>autonewsmd</code>. To be correctly
+recognized by <code>autonewsmd</code>, it is important that the
+formatting of the commit messages follow the conventions described <a href="https://www.conventionalcommits.org/en/v1.0.0/">here</a>.</p>
+<center>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Changelog Subheading</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>feat:</td>
+<td>New features</td>
+</tr>
+<tr class="even">
+<td>fix:</td>
+<td>Bug fixes</td>
+</tr>
+<tr class="odd">
+<td>refactor:</td>
+<td>Refactorings</td>
+</tr>
+<tr class="even">
+<td>perf:</td>
+<td>Performance</td>
+</tr>
+<tr class="odd">
+<td>build:</td>
+<td>Build</td>
+</tr>
+<tr class="even">
+<td>test:</td>
+<td>Tests</td>
+</tr>
+<tr class="odd">
+<td>ci:</td>
+<td>CI</td>
+</tr>
+<tr class="even">
+<td>docs:</td>
+<td>Docs</td>
+</tr>
+<tr class="odd">
+<td>style:</td>
+<td>Style</td>
+</tr>
+<tr class="even">
+<td>chore:</td>
+<td>Other changes</td>
+</tr>
+</tbody>
+</table>
+</center>
+<p>If any commit type includes <code>BREAKING CHANGE</code> in its
+commit message’s body or footer, the subheading
+<strong><code>Breaking changes</code></strong> is included as first
+subheading within the respective sections.</p>
+<p>Please also refer to the <a href="https://github.com/kapsner/autonewsmd#autonewsmd"><code>README</code></a>
+for further information.</p>
+</div>
 <div id="example" class="section level2">
 <h2>Example</h2>
 <p>First of all, for demonstration purposes, a small git repository will

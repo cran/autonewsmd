@@ -14,21 +14,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-get_git_log <- function(repo, repo_url, tag_pattern) {
+generate_autonewsmd <- function(self, private) {
 
-  # mapping list for the conventional commit types
-  type_mappings <- list(
-    "feat: " = "New features",
-    "fix: " = "Bug fixes",
-    "refactor: " = "Refactorings",
-    "perf: " = "Performance",
-    "build: " = "Build",
-    "test: " = "Tests",
-    "ci: " = "CI",
-    "docs: " = "Docs",
-    "style: " = "Style",
-    "chore: " = "Other changes"
-  )
+  repo <- private$repo
+  repo_url <- private$repo_url
+  tag_pattern <- self$tag_pattern
+  type_mappings <- private$type_mappings
 
   # load whole git-history into a data.table
   repo_df <- git2r::as.data.frame(repo) %>%
@@ -43,10 +34,10 @@ get_git_log <- function(repo, repo_url, tag_pattern) {
 
   # identify the conventional commits
   for (tm in names(type_mappings)) {
-    pattern <- paste0("^", tm)
+    pattern <- paste0("^", tm, "(\\(\\w*\\))?(\\!)?: ")
     repo_df[
       grepl(pattern = pattern, x = get("summary")),
-      `:=` (
+      `:=` ( # nolint
         # set the human readable type, used as subheadings
         "type" = type_mappings[tm],
         # clean up the commit summary
@@ -57,11 +48,17 @@ get_git_log <- function(repo, repo_url, tag_pattern) {
         )
       )
     ]
+    # check for breaking changes
+    pattern_bc <- paste0("^", tm, "(\\(\\w*\\))?\\!: ")
+    n_bc <- grepl(pattern = pattern_bc, x = repo_df[, get("summary")])
+    if (sum(n_bc) > 0) {
+      repo_df[n_bc, ("type") := "Breaking changes"]
+    }
   }
 
-  # rewrite breaking changes
+  # rewrite breaking changes, if the are only mentioned in the message
   repo_df[
-    grepl(pattern = "^BREAKING CHANGE: ", x = get("message")),
+    grepl(pattern = "BREAKING CHANGE: ", x = get("message")),
     ("type") := "Breaking changes"
   ]
 
@@ -120,10 +117,14 @@ get_git_log <- function(repo, repo_url, tag_pattern) {
     }
   }
 
-  # add a before-tag to each commit that indicates to which tag the previous
-  # commit belongs; this is necessary to get the information on the full set
-  # of changes between two releases
-  repo_df[, ("tag_before") := c(repo_df$tag[2:nrow(repo_df)], NA_character_)]
+  if (length(repo_tags) > 0 || nrow(repo_df) > 1) {
+    # add a before-tag to each commit that indicates to which tag the previous
+    # commit belongs; this is necessary to get the information on the full set
+    # of changes between two releases
+    repo_df[, ("tag_before") := c(repo_df$tag[2:nrow(repo_df)], NA_character_)]
+  } else {
+    repo_df[, ("tag_before") := NA_character_]
+  }
 
   # create the repo-list that builds the data model for writing the changelog
   # file
@@ -190,5 +191,5 @@ get_git_log <- function(repo, repo_url, tag_pattern) {
     }
     repo_list[[tn]] <- append_list
   }
-  return(repo_list)
+  self$repo_list <- repo_list
 }

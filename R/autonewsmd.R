@@ -26,11 +26,6 @@
 #'   repository, which needs at least to be provided when constructing a new
 #'   changelog file.
 #'
-#' @import data.table
-#' @import R6
-#' @importFrom magrittr "%>%"
-#' @importFrom utils askYesNo
-#'
 #' @examples
 #' # (Example is based on the public examples from the `git2r` R package)
 #' ## Initialize a repository
@@ -107,6 +102,9 @@ autonewsmd <- R6::R6Class(
     #' @param repo_path A character. The path of the repository to create a new
     #'   changelog for. If `NULL` (the default), it will point automatically to
     #'   to `"."`.
+    #' @param repo_remotes A character. The name of the tracked repository that
+    #'   should be used to get the repository's URL (e.g. when executing
+    #'   `git remote -v` in the shell). Defaults to `NULL`.
     #' @return A new `autonewsmd` object.
     #'
     #' @examples
@@ -146,25 +144,12 @@ autonewsmd <- R6::R6Class(
     #' ## now construct a new autonewsmd object
     #' an <- autonewsmd$new(repo_name = "TestRepo", repo_path = path)
     #'
-    initialize = function(repo_name, repo_path = NULL) {
-      stopifnot(
-        is.character(repo_name),
-        ifelse(
-          test = is.null(repo_path),
-          yes = TRUE,
-          no = is.character(repo_path) && dir.exists(repo_path)
-        )
-      )
-      if (is.null(repo_path)) {
-        message(
-          "No 'repo_path' provided. Setting 'repo_path' to '.'."
-        )
-        repo_path <- "."
-      }
-      self$repo_name <- repo_name
-      private$repo_path <- normalizePath(repo_path)
-      private$repo <- git2r::repository(path = private$repo_path)
-      private$repo_url <- git2r::remote_url(private$repo)
+    initialize = function(
+      repo_name,
+      repo_path = NULL,
+      repo_remotes = NULL
+    ) {
+      init_autonewsmd(self, private, repo_name, repo_path, repo_remotes)
     },
 
     #' @description
@@ -217,11 +202,7 @@ autonewsmd <- R6::R6Class(
     #' an$generate()
     #'
     generate = function() {
-      self$repo_list <- get_git_log(
-        repo = private$repo,
-        repo_url = private$repo_url,
-        tag_pattern = self$tag_pattern
-      )
+      generate_autonewsmd(self, private)
     },
 
     #' @description
@@ -282,72 +263,26 @@ autonewsmd <- R6::R6Class(
     #' }
     #'
     write = function(force = FALSE, con = NULL) {
-      stopifnot(
-        !is.null(self$repo_list),
-        !is.null(private$repo_url),
-        is.logical(force)
-      )
-
-      if (isFALSE(force)) {
-        full_path <- file.path(
-          private$repo_path,
-          paste0(self$file_name, self$file_ending)
-        )
-        msg <- paste0(
-          "Do you want to write the file '", full_path, "'?"
-        )
-        if (file.exists(full_path)) {
-          msg <- paste(
-            msg, "CAUTION: this overwrites the existing file!",
-            sep = "\n"
-          )
-        }
-        msg <- paste(
-          msg, "(Use `force = TRUE` to omit this interactive question.)",
-          sep = "\n"
-        )
-        if (is.null(con) && interactive()) {
-          answer <- utils::askYesNo(
-            msg = message(msg),
-            default = TRUE
-          )
-        } else if (inherits(con, c("file", "connection"))) {
-          # display prompt and options
-          optlist <- paste(c("Yes", "no", "cancel"), collapse = "/")
-          prompt_opt <- paste0(msg, " (", optlist, ")\n")
-          message(prompt_opt)
-          read_con <- readLines(con = con, n = 1)
-          if (read_con %in% c("Yes", "yes", "y", "ye")) {
-            answer <- TRUE
-          } else {
-            answer <- FALSE
-          }
-        } else {
-          stop(paste0(
-            "Please provide a valid connection containing the ",
-            "answer to the interactive question, if the newly generated ",
-            "changelog file should be written to the file system."
-          ))
-        }
-
-        if (!isTRUE(answer)) {
-          return(invisible())
-        }
-      }
-      markdown_render(
-        repo_list = self$repo_list,
-        repo_url = private$repo_url,
-        repo_name = self$repo_name,
-        repo_path = private$repo_path,
-        file_name = self$file_name,
-        file_ending = self$file_ending
-      )
+      write_autonewsmd(self, private, force, con)
     }
   ),
 
   private = list(
     repo = NULL,
     repo_url = NULL,
-    repo_path = NULL
+    repo_path = NULL,
+    # mapping list for the conventional commit types
+    type_mappings = list(
+      "feat" = "New features",
+      "fix" = "Bug fixes",
+      "refactor" = "Refactorings",
+      "perf" = "Performance",
+      "build" = "Build",
+      "test" = "Tests",
+      "ci" = "CI",
+      "docs" = "Docs",
+      "style" = "Style",
+      "chore" = "Other changes"
+    )
   )
 )
