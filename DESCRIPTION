@@ -1,6 +1,6 @@
 Package: autonewsmd
 Title: Auto-Generate Changelog using Conventional Commits
-Version: 0.0.4
+Version: 0.0.5
 Authors@R: 
     person("Lorenz A.", "Kapsner", , "lorenz.kapsner@gmail.com", role = c("cre", "aut", "cph"),
            comment = c(ORCID = "0000-0003-1866-860X"))
@@ -14,11 +14,11 @@ Depends: R (>= 3.4)
 Imports: data.table, git2r, magrittr, R6, rmarkdown, utils
 Suggests: knitr, lintr, testthat (>= 3.0.1)
 VignetteBuilder: knitr
-Date/Publication: 2022-10-31 13:32:02 UTC
+Date/Publication: 2023-01-21 09:30:05 UTC
 Encoding: UTF-8
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 NeedsCompilation: no
-Packaged: 2022-10-31 13:04:26 UTC; user
+Packaged: 2023-01-21 08:50:09 UTC; user
 Author: Lorenz A. Kapsner [cre, aut, cph]
     (<https://orcid.org/0000-0003-1866-860X>)
 Maintainer: Lorenz A. Kapsner <lorenz.kapsner@gmail.com>
