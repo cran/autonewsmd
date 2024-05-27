@@ -78,7 +78,7 @@ knitr::opts_chunk$set(
 
 ## ----writenmd-----------------------------------------------------------------
 #  an$write(force = TRUE)
-#  #> processing file: autonewsmd-5272f03178-news-md-template.Rmd
+#  #> processing file: autonewsmd-5272f03178-news-md-template.qmd
 #  #> output file: autonewsmd-5272f03178-news-md-template.knit.md
 #  #> /usr/lib/rstudio-server/bin/quarto/bin/tools/pandoc +RTS -K512m -RTS autonewsmd-5272f03178-news-md-template.knit.md --to markdown_strict-yaml_metadata_block --from markdown+autolink_bare_uris+tex_math_single_backslash --output /tmp/RtmpY9K0uU/autonewsmd/NEWS.md
 #  #>
@@ -115,7 +115,7 @@ knitr::opts_chunk$set(
 #  #> [07b6c39] 2022-09-02: chore: added news.md file
 #  an$generate()
 #  an$write(force = TRUE)
-#  #> processing file: autonewsmd-52215e4b2b-news-md-template.Rmd
+#  #> processing file: autonewsmd-52215e4b2b-news-md-template.qmd
 #  #> output file: autonewsmd-52215e4b2b-news-md-template.knit.md
 #  #> /usr/lib/rstudio-server/bin/quarto/bin/tools/pandoc +RTS -K512m -RTS autonewsmd-52215e4b2b-news-md-template.knit.md --to markdown_strict-yaml_metadata_block --from markdown+autolink_bare_uris+tex_math_single_backslash --output /tmp/RtmpY9K0uU/autonewsmd/NEWS.md
 #  #>

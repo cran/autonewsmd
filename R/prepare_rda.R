@@ -14,16 +14,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-if (dir.exists("../../R")) {
-  prefix <- "../../"
-} else if (dir.exists("./R")) {
-  prefix <- "./"
-}
+prepare_rda <- function(self, private) {
 
-test_that(
-  desc = "test lints",
-  code = {
-    skip_on_cran()
-    skip_if(dir.exists("../../00_pkg_src"))
-    lintr::expect_lint_free(path = prefix)
-  })
+  stopifnot(
+    "`repo_list` is missing or `NULL`" = !is.null(self$repo_list),
+    "`repo_url` is missing or `NULL`" = !is.null(private$repo_url)
+  )
+
+  repo_list <- self$repo_list
+  repo_url <- private$repo_url
+  repo_name <- self$repo_name
+  file_name <- self$file_name
+
+  save(
+    repo_list, repo_name, repo_url, file_name, mdtemplate_tags_decreasing,
+    file = file.path(tempdir(), "autonewsmd.Rda")
+  )
+}

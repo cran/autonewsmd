@@ -49,7 +49,7 @@ overflow: visible;
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -426,40 +426,40 @@ for further information.</p>
 <h2>Example</h2>
 <p>First of all, for demonstration purposes, a small git repository will
 be created with some commit messages.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(autonewsmd)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># (Example is based on the public examples from the `git2r` R package)</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Initialize a repository</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;autonewsmd&quot;</span>)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(path)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>repo <span class="ot">&lt;-</span> git2r<span class="sc">::</span><span class="fu">init</span>(path)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Config user</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>git2r<span class="sc">::</span><span class="fu">config</span>(repo, <span class="at">user.name =</span> <span class="st">&quot;Alice&quot;</span>, <span class="at">user.email =</span> <span class="st">&quot;alice@example.org&quot;</span>)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>git2r<span class="sc">::</span><span class="fu">remote_set_url</span>(repo, <span class="st">&quot;foobar&quot;</span>, <span class="st">&quot;https://example.org/git2r/foobar&quot;</span>)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Write to a file and commit</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>lines <span class="ot">&lt;-</span> <span class="st">&quot;Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do&quot;</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(lines, <span class="fu">file.path</span>(path, <span class="st">&quot;example.txt&quot;</span>))</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>git2r<span class="sc">::</span><span class="fu">add</span>(repo, <span class="st">&quot;example.txt&quot;</span>)</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>git2r<span class="sc">::</span><span class="fu">commit</span>(repo, <span class="st">&quot;feat: new file example.txt&quot;</span>)</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="do">## Write again to a file and commit</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.sleep</span>(<span class="dv">2</span>) <span class="co"># wait two seconds, otherwise, commit messages have same time stamp</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>lines2 <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;eiusmod tempor incididunt ut labore et dolore magna aliqua. &quot;</span>,</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris &quot;</span>,</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;nisi ut aliquip ex ea commodo consequat.&quot;</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="fu">write</span>(lines2, <span class="fu">file.path</span>(path, <span class="st">&quot;example.txt&quot;</span>), <span class="at">append =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>git2r<span class="sc">::</span><span class="fu">add</span>(repo, <span class="st">&quot;example.txt&quot;</span>)</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>git2r<span class="sc">::</span><span class="fu">commit</span>(repo, <span class="st">&quot;refactor: added second phrase&quot;</span>)</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="do">## Also add a tag here</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>git2r<span class="sc">::</span><span class="fu">tag</span>(repo, <span class="st">&quot;v0.0.1&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(autonewsmd)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co"># (Example is based on the public examples from the `git2r` R package)</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="do">## Initialize a repository</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;autonewsmd&quot;</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="fu">dir.create</span>(path)</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>repo <span class="ot">&lt;-</span> git2r<span class="sc">::</span><span class="fu">init</span>(path)</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="do">## Config user</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>git2r<span class="sc">::</span><span class="fu">config</span>(repo, <span class="at">user.name =</span> <span class="st">&quot;Alice&quot;</span>, <span class="at">user.email =</span> <span class="st">&quot;alice@example.org&quot;</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>git2r<span class="sc">::</span><span class="fu">remote_set_url</span>(repo, <span class="st">&quot;foobar&quot;</span>, <span class="st">&quot;https://example.org/git2r/foobar&quot;</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="do">## Write to a file and commit</span></span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>lines <span class="ot">&lt;-</span> <span class="st">&quot;Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do&quot;</span></span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a><span class="fu">writeLines</span>(lines, <span class="fu">file.path</span>(path, <span class="st">&quot;example.txt&quot;</span>))</span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>git2r<span class="sc">::</span><span class="fu">add</span>(repo, <span class="st">&quot;example.txt&quot;</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>git2r<span class="sc">::</span><span class="fu">commit</span>(repo, <span class="st">&quot;feat: new file example.txt&quot;</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a><span class="do">## Write again to a file and commit</span></span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a><span class="fu">Sys.sleep</span>(<span class="dv">2</span>) <span class="co"># wait two seconds, otherwise, commit messages have same time stamp</span></span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a>lines2 <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a>  <span class="st">&quot;eiusmod tempor incididunt ut labore et dolore magna aliqua. &quot;</span>,</span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a>  <span class="st">&quot;Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris &quot;</span>,</span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a>  <span class="st">&quot;nisi ut aliquip ex ea commodo consequat.&quot;</span></span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a>)</span>
+<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a><span class="fu">write</span>(lines2, <span class="fu">file.path</span>(path, <span class="st">&quot;example.txt&quot;</span>), <span class="at">append =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a>git2r<span class="sc">::</span><span class="fu">add</span>(repo, <span class="st">&quot;example.txt&quot;</span>)</span>
+<span id="cb1-31"><a href="#cb1-31" tabindex="-1"></a>git2r<span class="sc">::</span><span class="fu">commit</span>(repo, <span class="st">&quot;refactor: added second phrase&quot;</span>)</span>
+<span id="cb1-32"><a href="#cb1-32" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" tabindex="-1"></a><span class="do">## Also add a tag here</span></span>
+<span id="cb1-34"><a href="#cb1-34" tabindex="-1"></a>git2r<span class="sc">::</span><span class="fu">tag</span>(repo, <span class="st">&quot;v0.0.1&quot;</span>)</span></code></pre></div>
 <p>Then, instantiate an <code>autonewsmd</code> object. Here, you must
 provide the <code>repo_name</code> (this argument is used to compose the
 title of the changelog file). The <code>repo_path</code>-argument can be
@@ -467,106 +467,106 @@ provided optionally and defaults to the current working directory
 (<code>&quot;.&quot;</code>). The <code>repo_path</code> should be the root of a
 git repository. The <code>$generate()</code>-method creates a list with
 all commit messages that is used for rendering the changelog file.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>an <span class="ot">&lt;-</span> autonewsmd<span class="sc">$</span><span class="fu">new</span>(<span class="at">repo_name =</span> <span class="st">&quot;TestRepo&quot;</span>, <span class="at">repo_path =</span> path)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>an<span class="sc">$</span><span class="fu">generate</span>()</span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># View the list</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>an<span class="sc">$</span>repo_list</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $v0.0.1</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $v0.0.1$commits</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                         sha                       summary                       message author</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1: c75e13af49dd99ab70f621717c4bf585001b82d0 refactor: added second phrase refactor: added second phrase  Alice</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2: f66d96d2362df21a0685b3636b43438f51814455    feat: new file example.txt    feat: new file example.txt  Alice</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                email                when sha_seven         type        clean_summary    tag tag_before</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1: alice@example.org 2022-09-02 06:31:20   c75e13a Refactorings  added second phrase v0.0.1     v0.0.1</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2: alice@example.org 2022-09-02 06:31:18   f66d96d New features new file example.txt v0.0.1       &lt;NA&gt;</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $v0.0.1$latest_date</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2022-09-02&quot;</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $v0.0.1$sha_from</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;f66d96d2362df21a0685b3636b43438f51814455&quot;</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $v0.0.1$sha_to</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;c75e13af49dd99ab70f621717c4bf585001b82d0&quot;</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $v0.0.1$tag_from</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;f66d96d&quot;</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $v0.0.1$tag_to</span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;v0.0.1&quot;</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $v0.0.1$full_changes</span></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Full set of changes: [`f66d96d...v0.0.1`](https://example.org/git2r/foobar/compare/f66d96d...v0.0.1)&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>an <span class="ot">&lt;-</span> autonewsmd<span class="sc">$</span><span class="fu">new</span>(<span class="at">repo_name =</span> <span class="st">&quot;TestRepo&quot;</span>, <span class="at">repo_path =</span> path)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>an<span class="sc">$</span><span class="fu">generate</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># View the list</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>an<span class="sc">$</span>repo_list</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt; $v0.0.1</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt; $v0.0.1$commits</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt;                                         sha                       summary                       message author</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt; 1: c75e13af49dd99ab70f621717c4bf585001b82d0 refactor: added second phrase refactor: added second phrase  Alice</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; 2: f66d96d2362df21a0685b3636b43438f51814455    feat: new file example.txt    feat: new file example.txt  Alice</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt;                email                when sha_seven         type        clean_summary    tag tag_before</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt; 1: alice@example.org 2022-09-02 06:31:20   c75e13a Refactorings  added second phrase v0.0.1     v0.0.1</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#&gt; 2: alice@example.org 2022-09-02 06:31:18   f66d96d New features new file example.txt v0.0.1       &lt;NA&gt;</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co">#&gt; $v0.0.1$latest_date</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2022-09-02&quot;</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt; $v0.0.1$sha_from</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt; [1] &quot;f66d96d2362df21a0685b3636b43438f51814455&quot;</span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#&gt; $v0.0.1$sha_to</span></span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co">#&gt; [1] &quot;c75e13af49dd99ab70f621717c4bf585001b82d0&quot;</span></span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a><span class="co">#&gt; $v0.0.1$tag_from</span></span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a><span class="co">#&gt; [1] &quot;f66d96d&quot;</span></span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a><span class="co">#&gt; $v0.0.1$tag_to</span></span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a><span class="co">#&gt; [1] &quot;v0.0.1&quot;</span></span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a><span class="co">#&gt; $v0.0.1$full_changes</span></span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Full set of changes: [`f66d96d...v0.0.1`](https://example.org/git2r/foobar/compare/f66d96d...v0.0.1)&quot;</span></span></code></pre></div>
 <p>Executing the <code>$write()</code>-method, the changelog is written
 to the path specified with the <code>repo_path</code>-argument. If
 <code>force = FALSE</code> (the default), a dialog is prompted to ask
 the user if the file should be (over-) written.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>an<span class="sc">$</span><span class="fu">write</span>(<span class="at">force =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; processing file: autonewsmd-5272f03178-news-md-template.Rmd</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; output file: autonewsmd-5272f03178-news-md-template.knit.md</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; /usr/lib/rstudio-server/bin/quarto/bin/tools/pandoc +RTS -K512m -RTS autonewsmd-5272f03178-news-md-template.knit.md --to markdown_strict-yaml_metadata_block --from markdown+autolink_bare_uris+tex_math_single_backslash --output /tmp/RtmpY9K0uU/autonewsmd/NEWS.md</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Output created: /tmp/RtmpY9K0uU/autonewsmd/NEWS.md</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>an<span class="sc">$</span><span class="fu">write</span>(<span class="at">force =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">#&gt; processing file: autonewsmd-5272f03178-news-md-template.qmd</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt; output file: autonewsmd-5272f03178-news-md-template.knit.md</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt; /usr/lib/rstudio-server/bin/quarto/bin/tools/pandoc +RTS -K512m -RTS autonewsmd-5272f03178-news-md-template.knit.md --to markdown_strict-yaml_metadata_block --from markdown+autolink_bare_uris+tex_math_single_backslash --output /tmp/RtmpY9K0uU/autonewsmd/NEWS.md</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt; Output created: /tmp/RtmpY9K0uU/autonewsmd/NEWS.md</span></span></code></pre></div>
 <p>Now, we can verify that the file <code>NEWS.md</code> also appears in
 the git folder and check its content.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(path)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;example.txt&quot; &quot;NEWS.md&quot;</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>newsmd <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="fu">file.path</span>(path, <span class="st">&quot;NEWS.md&quot;</span>))</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>newsmd</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] &quot;# TestRepo NEWS&quot;                                                                                </span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [2] &quot;&quot;                                                                                               </span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [3] &quot;## v0.0.1 (2022-09-02)&quot;                                                                         </span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [4] &quot;&quot;                                                                                               </span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [5] &quot;#### New features&quot;                                                                              </span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [6] &quot;&quot;                                                                                               </span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [7] &quot;-   new file example.txt&quot;                                                                       </span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [8] &quot;    ([f66d96d](https://example.org/git2r/foobar/tree/f66d96d2362df21a0685b3636b43438f51814455))&quot;</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [9] &quot;&quot;                                                                                               </span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [10] &quot;#### Refactorings&quot;                                                                              </span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [11] &quot;&quot;                                                                                               </span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [12] &quot;-   added second phrase&quot;                                                                        </span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [13] &quot;    ([c75e13a](https://example.org/git2r/foobar/tree/c75e13af49dd99ab70f621717c4bf585001b82d0))&quot;</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [14] &quot;&quot;                                                                                               </span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [15] &quot;Full set of changes:&quot;                                                                           </span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [16] &quot;[`f66d96d...v0.0.1`](https://example.org/git2r/foobar/compare/f66d96d...v0.0.1)&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">list.files</span>(path)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;example.txt&quot; &quot;NEWS.md&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>newsmd <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="fu">file.path</span>(path, <span class="st">&quot;NEWS.md&quot;</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>newsmd</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co">#&gt;  [1] &quot;# TestRepo NEWS&quot;                                                                                </span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co">#&gt;  [2] &quot;&quot;                                                                                               </span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co">#&gt;  [3] &quot;## v0.0.1 (2022-09-02)&quot;                                                                         </span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt;  [4] &quot;&quot;                                                                                               </span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#&gt;  [5] &quot;#### New features&quot;                                                                              </span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt;  [6] &quot;&quot;                                                                                               </span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt;  [7] &quot;-   new file example.txt&quot;                                                                       </span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">#&gt;  [8] &quot;    ([f66d96d](https://example.org/git2r/foobar/tree/f66d96d2362df21a0685b3636b43438f51814455))&quot;</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt;  [9] &quot;&quot;                                                                                               </span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt; [10] &quot;#### Refactorings&quot;                                                                              </span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt; [11] &quot;&quot;                                                                                               </span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt; [12] &quot;-   added second phrase&quot;                                                                        </span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt; [13] &quot;    ([c75e13a](https://example.org/git2r/foobar/tree/c75e13af49dd99ab70f621717c4bf585001b82d0))&quot;</span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt; [14] &quot;&quot;                                                                                               </span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt; [15] &quot;Full set of changes:&quot;                                                                           </span></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt; [16] &quot;[`f66d96d...v0.0.1`](https://example.org/git2r/foobar/compare/f66d96d...v0.0.1)&quot;</span></span></code></pre></div>
 <p>To see, how the changelog file builds up, the new file can also be
 added and committed.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.sleep</span>(<span class="dv">2</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>git2r<span class="sc">::</span><span class="fu">add</span>(repo, <span class="st">&quot;NEWS.md&quot;</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>git2r<span class="sc">::</span><span class="fu">commit</span>(repo, <span class="st">&quot;chore: added news.md file&quot;</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [07b6c39] 2022-09-02: chore: added news.md file</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>an<span class="sc">$</span><span class="fu">generate</span>()</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>an<span class="sc">$</span><span class="fu">write</span>(<span class="at">force =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; processing file: autonewsmd-52215e4b2b-news-md-template.Rmd</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; output file: autonewsmd-52215e4b2b-news-md-template.knit.md</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; /usr/lib/rstudio-server/bin/quarto/bin/tools/pandoc +RTS -K512m -RTS autonewsmd-52215e4b2b-news-md-template.knit.md --to markdown_strict-yaml_metadata_block --from markdown+autolink_bare_uris+tex_math_single_backslash --output /tmp/RtmpY9K0uU/autonewsmd/NEWS.md</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Output created: /tmp/RtmpY9K0uU/autonewsmd/NEWS.md</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>newsmd <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="fu">file.path</span>(path, <span class="st">&quot;NEWS.md&quot;</span>))</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>newsmd</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] &quot;# TestRepo NEWS&quot;                                                                                </span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [2] &quot;&quot;                                                                                               </span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [3] &quot;## Unreleased (2022-09-02)&quot;                                                                     </span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [4] &quot;&quot;                                                                                               </span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [5] &quot;#### Other changes&quot;                                                                             </span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [6] &quot;&quot;                                                                                               </span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [7] &quot;-   added news.md file&quot;                                                                         </span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [8] &quot;    ([07b6c39](https://example.org/git2r/foobar/tree/07b6c390bf728cf6e19a991dabe7cb8f1cad1ad6))&quot;</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [9] &quot;&quot;                                                                                               </span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [10] &quot;## v0.0.1 (2022-09-02)&quot;                                                                         </span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [11] &quot;&quot;                                                                                               </span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [12] &quot;#### New features&quot;                                                                              </span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [13] &quot;&quot;                                                                                               </span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [14] &quot;-   new file example.txt&quot;                                                                       </span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [15] &quot;    ([f66d96d](https://example.org/git2r/foobar/tree/f66d96d2362df21a0685b3636b43438f51814455))&quot;</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [16] &quot;&quot;                                                                                               </span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [17] &quot;#### Refactorings&quot;                                                                              </span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [18] &quot;&quot;                                                                                               </span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [19] &quot;-   added second phrase&quot;                                                                        </span></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [20] &quot;    ([c75e13a](https://example.org/git2r/foobar/tree/c75e13af49dd99ab70f621717c4bf585001b82d0))&quot;</span></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [21] &quot;&quot;                                                                                               </span></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [22] &quot;Full set of changes:&quot;                                                                           </span></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [23] &quot;[`f66d96d...v0.0.1`](https://example.org/git2r/foobar/compare/f66d96d...v0.0.1)&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">Sys.sleep</span>(<span class="dv">2</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>git2r<span class="sc">::</span><span class="fu">add</span>(repo, <span class="st">&quot;NEWS.md&quot;</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>git2r<span class="sc">::</span><span class="fu">commit</span>(repo, <span class="st">&quot;chore: added news.md file&quot;</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co">#&gt; [07b6c39] 2022-09-02: chore: added news.md file</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>an<span class="sc">$</span><span class="fu">generate</span>()</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>an<span class="sc">$</span><span class="fu">write</span>(<span class="at">force =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt; processing file: autonewsmd-52215e4b2b-news-md-template.qmd</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt; output file: autonewsmd-52215e4b2b-news-md-template.knit.md</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co">#&gt; /usr/lib/rstudio-server/bin/quarto/bin/tools/pandoc +RTS -K512m -RTS autonewsmd-52215e4b2b-news-md-template.knit.md --to markdown_strict-yaml_metadata_block --from markdown+autolink_bare_uris+tex_math_single_backslash --output /tmp/RtmpY9K0uU/autonewsmd/NEWS.md</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt; Output created: /tmp/RtmpY9K0uU/autonewsmd/NEWS.md</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>newsmd <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="fu">file.path</span>(path, <span class="st">&quot;NEWS.md&quot;</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>newsmd</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt;  [1] &quot;# TestRepo NEWS&quot;                                                                                </span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt;  [2] &quot;&quot;                                                                                               </span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt;  [3] &quot;## Unreleased (2022-09-02)&quot;                                                                     </span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt;  [4] &quot;&quot;                                                                                               </span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt;  [5] &quot;#### Other changes&quot;                                                                             </span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt;  [6] &quot;&quot;                                                                                               </span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt;  [7] &quot;-   added news.md file&quot;                                                                         </span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt;  [8] &quot;    ([07b6c39](https://example.org/git2r/foobar/tree/07b6c390bf728cf6e19a991dabe7cb8f1cad1ad6))&quot;</span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co">#&gt;  [9] &quot;&quot;                                                                                               </span></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co">#&gt; [10] &quot;## v0.0.1 (2022-09-02)&quot;                                                                         </span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co">#&gt; [11] &quot;&quot;                                                                                               </span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="co">#&gt; [12] &quot;#### New features&quot;                                                                              </span></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="co">#&gt; [13] &quot;&quot;                                                                                               </span></span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co">#&gt; [14] &quot;-   new file example.txt&quot;                                                                       </span></span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="co">#&gt; [15] &quot;    ([f66d96d](https://example.org/git2r/foobar/tree/f66d96d2362df21a0685b3636b43438f51814455))&quot;</span></span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="co">#&gt; [16] &quot;&quot;                                                                                               </span></span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="co">#&gt; [17] &quot;#### Refactorings&quot;                                                                              </span></span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="co">#&gt; [18] &quot;&quot;                                                                                               </span></span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a><span class="co">#&gt; [19] &quot;-   added second phrase&quot;                                                                        </span></span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a><span class="co">#&gt; [20] &quot;    ([c75e13a](https://example.org/git2r/foobar/tree/c75e13af49dd99ab70f621717c4bf585001b82d0))&quot;</span></span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a><span class="co">#&gt; [21] &quot;&quot;                                                                                               </span></span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a><span class="co">#&gt; [22] &quot;Full set of changes:&quot;                                                                           </span></span>
+<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a><span class="co">#&gt; [23] &quot;[`f66d96d...v0.0.1`](https://example.org/git2r/foobar/compare/f66d96d...v0.0.1)&quot;</span></span></code></pre></div>
 </div>
 <div id="further-configurations" class="section level2">
 <h2>Further configurations</h2>
@@ -574,20 +574,20 @@ added and committed.</p>
 some other (optional) configurations available. The file name can be
 modified with the field <code>$file_name</code>. Typically, the file
 name is <code>NEWS</code> or <code>CHANGELOG</code>.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>an<span class="sc">$</span>file_name</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;NEWS&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>an<span class="sc">$</span>file_name</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;NEWS&quot;</span></span></code></pre></div>
 <p>Furthermore, the ending of the changelog file can be set with
 <code>$file_ending</code>. This defaults to <code>.md</code>, but could,
 for example, also be <code>.txt</code> or even an empty string.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>an<span class="sc">$</span>file_ending</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;.md&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>an<span class="sc">$</span>file_ending</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;.md&quot;</span></span></code></pre></div>
 <p>A very important configuration is the <code>tag_pattern</code>. This
 regular expression is used to identify release tags, which are used to
 create the subsections of the changelog file. This field defaults to
 <code>&quot;^v(\\d+\\.){2}\\d+(\\.\\d+)?$&quot;</code> to identify patterns of the
 from <code>v0.0.1.9001</code>.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>an<span class="sc">$</span>tag_pattern</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;^v(\\d+\\.){2}\\d+(\\.\\d+)?$&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>an<span class="sc">$</span>tag_pattern</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;^v(\\d+\\.){2}\\d+(\\.\\d+)?$&quot;</span></span></code></pre></div>
 </div>
 
 
