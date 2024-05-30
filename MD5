@@ -1,6 +1,6 @@
-0094ef03f1c1411a9612af6baffc222f *DESCRIPTION
+0dda07fe60f9cb11bc1398f81ae5bc0f *DESCRIPTION
 0052bc43eac952519aaecc4c08cb3082 *NAMESPACE
-ed24c046e6edfab89e7e7a15803d4b64 *R/autonewsmd.R
+7b6c269e15fde20539e75e0add006da1 *R/autonewsmd.R
 3df728069dfb665c3aa27bed0fa748ec *R/generate_autonewsmd.R
 ea4ff8cb37001c69b11a7d1507935f8c *R/init_autonewsmd.R
 603a5ecaa2a5a6e00d729c79fb146eab *R/mdtemplate_tags_decreasing.R
